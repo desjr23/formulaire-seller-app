@@ -1,0 +1,68 @@
+<mat-horizontal-stepper #stepper linear>
+  <!-- Étape 1 : Vendeur -->
+  <mat-step [stepControl]="sellerForm">
+    <form [formGroup]="sellerForm">
+      <h3>Informations du vendeur</h3>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nom</mat-label>
+        <input matInput placeholder="Nom" formControlName="nom" />
+        <mat-error *ngIf="sellerForm.get('nom')?.touched && sellerForm.get('nom')?.invalid">
+          Le nom est requis
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Prénom</mat-label>
+        <input matInput placeholder="Prénom" formControlName="prenom" />
+        <mat-error *ngIf="sellerForm.get('prenom')?.touched && sellerForm.get('prenom')?.invalid">
+          Le prénom est requis
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Téléphone</mat-label>
+        <input matInput placeholder="Téléphone" formControlName="tel" />
+        <mat-error *ngIf="sellerForm.get('tel')?.touched && sellerForm.get('tel')?.invalid">
+          Le téléphone est requis
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email" type="email" />
+        
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Adresse</mat-label>
+        <input matInput placeholder="Adresse" formControlName="adresse" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Photo URL</mat-label>
+        <input matInput placeholder="Photo URL" formControlName="photourl" />
+      </mat-form-field>
+
+      <div class="stepper-buttons">
+        <button mat-raised-button color="primary" type="button" (click)="onSubmitSeller(stepper)" >
+          Suivant
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Étape 2 : Boutique -->
+  <mat-step [stepControl]="shopForm">
+    <form [formGroup]="shopForm">
+      <h3>Informations de la boutique</h3>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nom de la boutique</mat-label>
+        <input matInput placeholder="Nom de la boutique" formControlName="libelle" />
+        <mat-error *ngIf="shopForm.get('libelle')?.touched && shopForm.get('libelle')?.invalid">
+             Le nom de la boutique est requis
+        </mat-error>
+
+    
+

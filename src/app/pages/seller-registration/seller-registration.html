@@ -1,4 +1,4 @@
-<mat-horizontal-stepper #stepper linear>
+<mat-horizontal-stepper #stepper linear (selectionChange)="onStepChange($event, stepper)">
   <!-- Étape 1 : Vendeur -->
   <mat-step [stepControl]="sellerForm">
     <form [formGroup]="sellerForm">
@@ -31,7 +31,6 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" formControlName="email" type="email" />
-        
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="full-width">
@@ -39,13 +38,21 @@
         <input matInput placeholder="Adresse" formControlName="adresse" />
       </mat-form-field>
 
+      <div class="file-input">
+        <label for="photo">Photo</label>
+        <input id="photo" type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
+      </div>
+
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Photo URL</mat-label>
         <input matInput placeholder="Photo URL" formControlName="photourl" />
       </mat-form-field>
 
       <div class="stepper-buttons">
-        <button mat-raised-button color="primary" type="button" (click)="onSubmitSeller(stepper)" >
+        <button mat-raised-button color="primary" type="button"
+                (click)="onSubmitSeller(stepper)"
+                [disabled]="isSubmitting">
           Suivant
         </button>
       </div>
@@ -61,8 +68,33 @@
         <mat-label>Nom de la boutique</mat-label>
         <input matInput placeholder="Nom de la boutique" formControlName="libelle" />
         <mat-error *ngIf="shopForm.get('libelle')?.touched && shopForm.get('libelle')?.invalid">
-             Le nom de la boutique est requis
+          Le nom de la boutique est requis
         </mat-error>
+      </mat-form-field>
 
-    
+      <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Date de création</mat-label>
+      <input matInput type="date" formControlName="date_creation" />
+    </mat-form-field>
+    <div class="file-input">
+        <label for="logo">Logo</label>
+        <input id="logo" type="file" accept="image/*" (change)="onLogoSelected($event)" />
+        <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
+      </div>
 
+     <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Logo URL</mat-label>
+      <input matInput placeholder="URL du logo" formControlName="logourl" />
+    </mat-form-field>
+
+          <!-- Message d'erreur inline pour stepper -->
+     <div class="error-message" *ngIf="stepError">{{ stepError }}</div>
+
+      <div class="stepper-buttons">
+        <button mat-raised-button color="primary" type="button" (click)="onSubmitShop()">
+          Terminer
+        </button>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>

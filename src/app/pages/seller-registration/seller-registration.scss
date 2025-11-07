@@ -2,11 +2,31 @@
 mat-horizontal-stepper {
   width: 100%;
   max-width: 600px;
-  margin: 2rem auto;
+  margin: 1rem auto;
+
   background: #ffffff;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  .file-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+
+  label {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  input[type="file"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+  }
+}
+
+
 }
 
 /* Titres des étapes */
@@ -21,7 +41,7 @@ h3 {
 /* Form fields */
 mat-form-field {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 
   input {
     padding: 0.5rem;
@@ -33,9 +53,21 @@ mat-form-field {
   display: flex;
   justify-content: space-between;
   margin-top: 1.5rem;
+  width: 55%;
+  height: 50px;
+  margin: auto;
 
   button {
-    min-width: 120px;
+    border-radius: 10px;
+    min-width: 300px;
+    cursor: pointer;
+    text-transform: uppercase;
+    background: #000;
+    color: #ffffff;
+
+    &:hover {
+      background-color: #333;
+    }
   }
 }
 
@@ -64,4 +96,6 @@ mat-error {
       width: 100%;
     }
   }
+  
+
 }

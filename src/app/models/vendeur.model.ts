@@ -6,5 +6,5 @@ export interface Vendeur {
   adresse?: string;
   email: string;
   photo?: string;
-  photourl?: string;
+ 
 }

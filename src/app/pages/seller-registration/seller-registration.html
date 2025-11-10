@@ -44,10 +44,7 @@
         <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
       </div>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Photo URL</mat-label>
-        <input matInput placeholder="Photo URL" formControlName="photourl" />
-      </mat-form-field>
+    
 
       <div class="stepper-buttons">
         <button mat-raised-button color="primary" type="button"
@@ -67,6 +64,7 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Nom de la boutique</mat-label>
         <input matInput placeholder="Nom de la boutique" formControlName="libelle" />
+        
         <mat-error *ngIf="shopForm.get('libelle')?.touched && shopForm.get('libelle')?.invalid">
           Le nom de la boutique est requis
         </mat-error>
@@ -82,10 +80,7 @@
         <span *ngIf="selectedFileName">{{ selectedFileName }}</span>
       </div>
 
-     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Logo URL</mat-label>
-      <input matInput placeholder="URL du logo" formControlName="logourl" />
-    </mat-form-field>
+     
 
           <!-- Message d'erreur inline pour stepper -->
      <div class="error-message" *ngIf="stepError">{{ stepError }}</div>

@@ -32,7 +32,8 @@ export class SellerRegistration {
   selectedFileName: string = '';
   isSubmitting = false;
   sellerCreated = false;
-  stepError:string = '';
+  stepError: string = '';
+  
 
   constructor(private fb: FormBuilder, private boutiqueService: BoutiqueService) {
     // Étape 1 : Vendeur
@@ -41,7 +42,6 @@ export class SellerRegistration {
       prenom: ['', Validators.required],
       tel: ['', Validators.required],
       photo: [null],
-      photourl: [''],
       adresse: [''],
       email: ['', Validators.email],
     });
@@ -50,7 +50,6 @@ export class SellerRegistration {
     this.shopForm = this.fb.group({
       libelle: ['', Validators.required],
       date_creation: [''],
-      logourl: [''],
       logo: [null],
     });
   }
@@ -58,12 +57,17 @@ export class SellerRegistration {
   // Étape 1 : créer vendeur
   onSubmitSeller(stepper: any) {
     if (this.sellerForm.valid) {
+
+      //stockage des données dans le localStorage
+      const vendeur = this.sellerForm.value;
+      localStorage.setItem('vendeur', JSON.stringify(vendeur)); //stocke  les données du formulaire dans le localStorage sous forme texte
+      console.log('Vendeur enregistré');
+        
       const vendeurData: Vendeur = {
         nom: this.sellerForm.value.nom,
         prenom: this.sellerForm.value.prenom,
         tel: this.sellerForm.value.tel,
         photo: this.sellerForm.value.photo,
-        photourl: this.sellerForm.value.photourl,
         adresse: this.sellerForm.value.adresse,
         email: this.sellerForm.value.email || null, // optionnel
       };
@@ -82,7 +86,7 @@ export class SellerRegistration {
           this.isSubmitting = false;
           this.sellerCreated = false;
           this.stepError = 'Erreur lors de la création du vendeur. Veuillez réessayer.';
-          
+
           console.error('❌ Erreur création vendeur :', err);
           alert('Erreur lors de la création du vendeur');
         },
@@ -95,19 +99,20 @@ export class SellerRegistration {
 
   onStepChange(event: any, stepper: any) {
     if (event.selectedIndex === 1 && !this.sellerCreated) {
-      this.stepError = 'Vous devez d’abord créer le vendeur avant de passer à l’étape suivante.';
-      alert('Vous devez d’abord créer le vendeur avant de passer à l’étape suivante.');
-        setTimeout(() => {
-          stepper.selectedIndex = 0;
-        }
+      this.stepError =
+        'Vous devez d’abord vous inscrire en tant que vendeur avant de passer de créer votre boutique';
+      alert('Vous devez d’abord vous inscrire en tant que vendeur avant de créer votre boutique');
+      //   setTimeout(() => {
+      //     stepper.selectedIndex = 0;
+      //   }
 
-        )
-      stepper.selectedIndex = 0;
-    }else{
+      //   )
+      // stepper.selectedIndex = 0;
+    } else {
       this.stepError = '';
     }
   }
-  //methode pour gérer l'upload de la photo
+  //méthode pour gérer l'upload de la photo
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -118,7 +123,7 @@ export class SellerRegistration {
     }
   }
 
-  //methode pour gérer le logo
+  //méthode pour gérer le logo
 
   onLogoSelected(event: any) {
     const file = event.target.files[0];
@@ -129,15 +134,14 @@ export class SellerRegistration {
     }
   }
 
-  // Étape 2 : créer boutique
+  // Étape 2 : création de boutique
   onSubmitShop() {
     if (this.shopForm.valid) {
       const boutiqueData: Boutique = {
         libelle: this.shopForm.value.libelle,
         date_creation: this.shopForm.value.date_creation || new Date().toISOString(),
-        logourl: this.shopForm.value.logourl,
+
         vendeur_id: this.vendeurId!,
-        
       };
 
       this.boutiqueService.creerBoutique(boutiqueData).subscribe({
@@ -151,6 +155,15 @@ export class SellerRegistration {
           alert('Erreur lors de la création de la boutique');
         },
       });
+    }
+  }
+  ngOnInit(): void {
+    const savedVendeur = localStorage.getItem('vendeur');
+    if (savedVendeur) {
+      const vendeur = JSON.parse(savedVendeur);
+      console.log('données récupérées depuis le localstorage:', vendeur);
+    } else {
+      console.warn('aucune donnée vendeur trouvée dans le localStorage');
     }
   }
 }

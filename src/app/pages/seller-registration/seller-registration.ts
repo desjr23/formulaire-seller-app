@@ -97,11 +97,11 @@ export class SellerRegistration {
     if (event.selectedIndex === 1 && !this.sellerCreated) {
       this.stepError = 'Vous devez d’abord créer le vendeur avant de passer à l’étape suivante.';
       alert('Vous devez d’abord créer le vendeur avant de passer à l’étape suivante.');
-      //  setTimeout(() => {
-      //    stepper.selectedIndex = 0;
-      //  }
+        setTimeout(() => {
+          stepper.selectedIndex = 0;
+        }
 
-      //  )
+        )
       stepper.selectedIndex = 0;
     }else{
       this.stepError = '';
@@ -137,6 +137,7 @@ export class SellerRegistration {
         date_creation: this.shopForm.value.date_creation || new Date().toISOString(),
         logourl: this.shopForm.value.logourl,
         vendeur_id: this.vendeurId!,
+        
       };
 
       this.boutiqueService.creerBoutique(boutiqueData).subscribe({

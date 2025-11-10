@@ -4,5 +4,5 @@ export interface Boutique {
   date_creation?: string;
   logo?: string;
   logourl?: string;
-  vendeur_id: number;
+   vendeur_id: number;
 }

@@ -1,7 +1,5 @@
 export interface Boutique {
-  id?: number;
-  libelle: string;
-  date_creation?: string;
-  logo?: string;
-  vendeur_id: number;
+  libelle: string; // obligatoire
+  date_creation: string; // obligatoire, format YYYY-MM-DD
+  logo?: string; // optionnel
 }

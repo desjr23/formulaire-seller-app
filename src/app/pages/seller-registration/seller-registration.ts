@@ -33,7 +33,6 @@ export class SellerRegistration {
   isSubmitting = false;
   sellerCreated = false;
   stepError: string = '';
-  
 
   constructor(private fb: FormBuilder, private boutiqueService: BoutiqueService) {
     // Étape 1 : Vendeur
@@ -57,12 +56,11 @@ export class SellerRegistration {
   // Étape 1 : créer vendeur
   onSubmitSeller(stepper: any) {
     if (this.sellerForm.valid) {
-
       //stockage des données dans le localStorage
       const vendeur = this.sellerForm.value;
       localStorage.setItem('vendeur', JSON.stringify(vendeur)); //stocke  les données du formulaire dans le localStorage sous forme texte
       console.log('Vendeur enregistré');
-        
+
       const vendeurData: Vendeur = {
         nom: this.sellerForm.value.nom,
         prenom: this.sellerForm.value.prenom,

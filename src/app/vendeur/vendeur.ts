@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { VendeurService } from '../services/vendeur.service';
-import { BoutiqueService } from '../services/boutique.service';
-import { Vendeur } from '../models/vendeur.model';
-import { Boutique } from '../models/boutique.model';
 
 @Component({
   selector: 'app-inscription',
@@ -15,113 +12,73 @@ import { Boutique } from '../models/boutique.model';
 export class Inscription {
   successMessage = '';
   errorMessage = '';
-  vendeurCree: any = null;
 
-  // --- Formulaires ---
-  sellerForm = new FormGroup({
+  // Formulaire unique vendeur + boutique
+  sellerBoutiqueForm = new FormGroup({
     nom: new FormControl('', Validators.required),
     prenom: new FormControl('', Validators.required),
     tel: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
-    email: new FormControl('', Validators.email),
+    email: new FormControl(''),
     adresse: new FormControl(''),
-  });
 
-  boutiqueForm = new FormGroup({
     libelle: new FormControl('', Validators.required),
     date_creation: new FormControl(''),
   });
 
-  constructor(private vendeurService: VendeurService, private boutiqueService: BoutiqueService) {}
+  constructor(private vendeurService: VendeurService) {}
 
-  // --- Getters pour le template ---
+  // Getters pour le template
   get nom() {
-    return this.sellerForm.get('nom');
+    return this.sellerBoutiqueForm.get('nom');
   }
   get prenom() {
-    return this.sellerForm.get('prenom');
+    return this.sellerBoutiqueForm.get('prenom');
   }
   get tel() {
-    return this.sellerForm.get('tel');
+    return this.sellerBoutiqueForm.get('tel');
   }
   get email() {
-    return this.sellerForm.get('email');
+    return this.sellerBoutiqueForm.get('email');
   }
   get adresse() {
-    return this.sellerForm.get('adresse');
+    return this.sellerBoutiqueForm.get('adresse');
   }
   get libelle() {
-    return this.boutiqueForm.get('libelle');
+    return this.sellerBoutiqueForm.get('libelle');
   }
   get date_creation() {
-    return this.boutiqueForm.get('date_creation');
+    return this.sellerBoutiqueForm.get('date_creation');
   }
 
-  // --- Création vendeur ---
-  onSubmitVendeur() {
-    this.clearMessages();
+  // Création vendeur et boutique
+  onSubmit() {
+    if (this.sellerBoutiqueForm.valid) {
+      const payload = {
+        nom: this.nom!.value!,
+        prenom: this.prenom!.value!,
+        tel: this.tel!.value!,
+        email: this.email?.value || undefined,
+        adresse: this.adresse?.value || undefined,
+        boutique: {
+          libelle: this.libelle!.value!,
+          date_creation: this.date_creation?.value || undefined,
+        },
+      };
 
-    if (this.sellerForm.invalid) {
-      this.sellerForm.markAllAsTouched();
-      return;
+      this.vendeurService.createVendeur(payload).subscribe({
+        next: (response) => {
+          this.successMessage = 'Vendeur et boutique créés avec succès !';
+          this.errorMessage = '';
+          this.sellerBoutiqueForm.reset();
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = 'Erreur lors de la création du vendeur et de la boutique.';
+          this.successMessage = '';
+        },
+      });
+    } else {
+      this.sellerBoutiqueForm.markAllAsTouched();
     }
-
-    const vendeur: Vendeur = {
-      nom: this.nom!.value!,
-      prenom: this.prenom!.value!,
-      tel: this.tel!.value!,
-      email: this.email?.value || undefined,
-      adresse: this.adresse?.value || undefined,
-    };
-
-    this.vendeurService.createVendeur(vendeur).subscribe({
-      next: (vendeurCree) => {
-        this.vendeurCree = vendeurCree;
-        this.successMessage = `Vendeur "${vendeurCree.nom}" créé avec succès !`;
-        this.sellerForm.reset();
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Erreur lors de la création du vendeur. Vérifiez les champs.';
-      },
-    });
-  }
-
-  // --- Création boutique ---
-  onSubmitBoutique() {
-    this.clearMessages();
-
-    if (!this.vendeurCree) {
-      this.errorMessage = 'Veuillez créer un vendeur avant de créer la boutique.';
-      return;
-    }
-
-    if (this.boutiqueForm.invalid) {
-      this.boutiqueForm.markAllAsTouched();
-      return;
-    }
-
-    const boutique: Boutique & { vendeur_id: string } = {
-      libelle: this.libelle!.value!,
-      date_creation: this.date_creation?.value || undefined,
-      vendeur_id: this.vendeurCree.vendeur_id,
-    };
-
-    this.boutiqueService.createBoutique(boutique).subscribe({
-      next: (boutiqueCree) => {
-        this.successMessage = `Boutique "${boutiqueCree.libelle}" créée avec succès pour le vendeur "${this.vendeurCree.nom}" !`;
-        this.boutiqueForm.reset();
-        this.vendeurCree = null; // reset flow pour nouveau vendeur
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Erreur lors de la création de la boutique.';
-      },
-    });
-  }
-
-  // --- Helper pour nettoyer les messages ---
-  private clearMessages() {
-    this.successMessage = '';
-    this.errorMessage = '';
   }
 }

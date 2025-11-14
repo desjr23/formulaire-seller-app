@@ -1,0 +1,43 @@
+<div class="container">
+  <div *ngIf="successMessage" style="color: green;">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</div>
+
+  <!-- Formulaire Vendeur -->
+  <form [formGroup]="sellerForm" (ngSubmit)="onSubmitVendeur()" *ngIf="!vendeurCree">
+    <h2>Inscription Vendeur</h2>
+
+    <label>Nom :</label>
+    <input type="text" formControlName="nom" />
+    <p *ngIf="nom?.invalid && nom?.touched" style="color:red">Nom obligatoire</p>
+
+    <label>Prénom :</label>
+    <input type="text" formControlName="prenom" />
+    <p *ngIf="prenom?.invalid && prenom?.touched" style="color:red">Prénom obligatoire</p>
+
+    <label>Téléphone :</label>
+    <input type="tel" formControlName="tel" />
+    <p *ngIf="tel?.invalid && tel?.touched" style="color:red">Téléphone invalide</p>
+
+    <label>Email :</label>
+    <input type="email" formControlName="email" />
+
+    <label>Adresse :</label>
+    <input type="text" formControlName="adresse" />
+
+    <button type="submit">S'inscrire</button>
+  </form>
+
+  <!-- Formulaire Boutique -->
+  <form [formGroup]="boutiqueForm" (ngSubmit)="onSubmitBoutique()" *ngIf="vendeurCree">
+    <h2>Création de la Boutique</h2>
+
+    <label>Libellé :</label>
+    <input type="text" formControlName="libelle" />
+    <p *ngIf="libelle?.invalid && libelle?.touched" style="color:red">Libellé obligatoire</p>
+
+    <label>Date de création :</label>
+    <input type="date" formControlName="date_creation" />
+
+    <button type="submit">Créer la boutique</button>
+  </form>
+</div>

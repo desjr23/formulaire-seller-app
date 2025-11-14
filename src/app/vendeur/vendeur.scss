@@ -37,11 +37,21 @@
         color: rgb(218, 59, 59);
 
     }
+
+    @media (max-width:600px)
+    {
+        width: 400px; 
+        margin: 100px auto;
+    }
     
 
 
 }
+
+
 h2{
     text-align: center;
-    margin-top: 50px;
+    
+    padding: 20px;
+    color: #f1f1f1;
 }

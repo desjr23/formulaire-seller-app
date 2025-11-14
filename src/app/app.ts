@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Inscription } from './inscription/vendeur';
+import { Inscription } from './vendeur/vendeur';
 
 @Component({
   selector: 'app-root',

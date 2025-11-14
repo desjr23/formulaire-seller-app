@@ -10,10 +10,10 @@ export class VendeurService {
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Le backend attend du JSON, pas de FormData
+  
   createVendeur(vendeurData: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, vendeurData, {
-      headers: { 'Content-Type': 'application/json' },
+    return this.http.post(this.apiUrl, vendeurData, {
+       
     });
   }
 }

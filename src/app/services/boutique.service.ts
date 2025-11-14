@@ -11,8 +11,8 @@ export class BoutiqueService {
   constructor(private http: HttpClient) {}
 
   createBoutique(boutiqueData: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, boutiqueData, {
-      headers: { 'Content-Type': 'application/json' },
+    return this.http.post(this.apiUrl, boutiqueData, {
+       
     });
   }
 }
